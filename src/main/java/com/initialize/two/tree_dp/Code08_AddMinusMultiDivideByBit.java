@@ -65,5 +65,40 @@ public class Code08_AddMinusMultiDivideByBit {
         return res;
     }
 
+    public static boolean isNeg(int n){
+        return n < 0;
+    }
+    public static int div(int a, int b){
+        int x = isNeg(a) ? negNum(a) : a;
+        int y = isNeg(b) ? negNum(b) : b;
+        int res = 0;
+        for(int i = 31; i > -1; i = minus(i, 1)){
+            if((x >> i) >= y){
+                res |= (1 << i);
+                x = minus(x, y << i);
+            }
+        }
+        return isNeg(a) ^ isNeg(b) ? negNum(res) : res;
+    }
+
+    public static int divide(int a, int b){
+        if(b == 0){
+            throw new RuntimeException("divisor is 0");
+        }
+        if(a == Integer.MIN_VALUE && b == Integer.MIN_VALUE){
+            return 1;
+        }else if (b == Integer.MIN_VALUE){//a和b不都是最小值
+            return 0;
+        }else if(a == Integer.MIN_VALUE){
+            int res = div(add(a, 1), b);
+            return add(res, div(minus(a, multi(res, b)), b));
+        }else{
+            return div(a, b);
+        }
+    }
+
+    public static void main(String[] args) {
+
+    }
 
 }
